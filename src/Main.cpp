@@ -10,7 +10,13 @@ int main()
     {
         if(window->keyboardState[SDL_SCANCODE_ESCAPE])
             window->CloseWindow();
+
+        window->DrawPoint(0, 0, {255, 0, 0, 255});
+
+        window->Render();
     }
+
+    window->Release();
 
     return 0;
 }

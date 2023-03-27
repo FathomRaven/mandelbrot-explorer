@@ -30,6 +30,9 @@ bool Graphics::Update()
     }
 
     keyboardState = SDL_GetKeyboardState(nullptr);
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
     
     return windowShouldClose;
 }
@@ -39,4 +42,15 @@ void Graphics::CreateWindow(const char *title, unsigned int width, unsigned int 
     this->width = width; this->height = height;
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+}
+
+void Graphics::DrawPoint(unsigned int x, unsigned int y, SDL_Color color)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderDrawPoint(renderer, x, y);
+}
+
+void Graphics::Render()
+{
+    SDL_RenderPresent(renderer);
 }
