@@ -11,12 +11,10 @@ int main()
     Mandelbrot mandelbrot({-0.5, 0.0}, 0.7, 30);
 
     while (!window->Update())
-    {
-        if (window->keyboardState[SDL_SCANCODE_ESCAPE])
-            window->CloseWindow();
-
+    {   
+        mandelbrot.Update();
         mandelbrot.Render();
-
+        
         window->Render();
     }
 

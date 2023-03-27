@@ -59,3 +59,8 @@ void Graphics::Render()
 {
     SDL_RenderPresent(renderer);
 }
+
+bool Graphics::GetKeyDown(SDL_Scancode key)
+{
+    return keyboardState[key];
+}

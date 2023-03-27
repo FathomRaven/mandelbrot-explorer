@@ -17,13 +17,16 @@ public:
     Mandelbrot(std::complex<double> center, double zoom, unsigned int maxIterations);
     ~Mandelbrot();
 
-    /// @brief Update and draw the mandelbrot set to the screen
+    /// @brief Draw the mandelbrot set to the screen
     void Render();
+
+    /// @brief Handle input before rendering
+    void Update();
+
+private:
+    Graphics *graphicsInstance;
 
     std::complex<double> center;
     double zoom;
     unsigned int maxIterations;
-
-private:
-    Graphics *graphicsInstance;
 };
