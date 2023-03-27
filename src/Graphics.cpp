@@ -16,6 +16,7 @@ void Graphics::Release()
 
 bool Graphics::Update()
 {
+    // Polls all the events, ensures all are gotten
     while (SDL_PollEvent(&events))
     {
         switch (events.type)
@@ -29,8 +30,10 @@ bool Graphics::Update()
         }
     }
 
+    // Update input
     keyboardState = SDL_GetKeyboardState(nullptr);
 
+    // Clear the screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     
@@ -39,7 +42,9 @@ bool Graphics::Update()
 
 void Graphics::CreateWindow(const char *title, unsigned int width, unsigned int height)
 {
-    this->width = width; this->height = height;
+    this->width = width;
+    this->height = height;
+
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
