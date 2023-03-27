@@ -1,17 +1,21 @@
 #include <iostream>
+
 #include "Graphics.hpp"
+#include "Mandelbrot.hpp"
 
 int main()
 {
-    Graphics* window = Graphics::GetInstance();
+    Graphics *window = Graphics::GetInstance();
     window->CreateWindow("Hello World", 800, 800);
+
+    Mandelbrot mandelbrot({-0.5, 0.0}, 0.7, 30);
 
     while (!window->Update())
     {
-        if(window->keyboardState[SDL_SCANCODE_ESCAPE])
+        if (window->keyboardState[SDL_SCANCODE_ESCAPE])
             window->CloseWindow();
 
-        window->DrawPoint(0, 0, {255, 0, 0, 255});
+        mandelbrot.Render();
 
         window->Render();
     }
