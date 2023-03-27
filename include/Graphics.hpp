@@ -12,8 +12,10 @@ public:
     Graphics(Graphics &other) = delete;
     void operator=(const Graphics &) = delete;
 
-    bool Update();
     void CreateWindow(const char* title, unsigned int width, unsigned int height);
+    void DrawPoint(unsigned int x, unsigned int y, SDL_Color color);
+    bool Update();
+    void Render();
 
     void CloseWindow() {windowShouldClose = true;}
     SDL_Renderer* GetRenderer() {return renderer;}
@@ -36,7 +38,15 @@ private:
     }
 
     ~Graphics()
-    { }
+    {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+
+        SDL_DestroyWindow(window);
+        window = nullptr;
+
+        SDL_Quit();
+    }
 
     static Graphics* instance_;
 };
