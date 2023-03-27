@@ -51,3 +51,22 @@ void Mandelbrot::Render()
         }
     }
 }
+
+void Mandelbrot::Update()
+{
+    // Everything here takes zoom into account, seems to help movement and zooming still work as depth increases 
+
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_SPACE))
+        zoom += zoom / 10;
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_LCTRL))
+        zoom -= zoom / 10;
+
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_LEFT))
+        center.real(std::real(center) - 0.1 / zoom);
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_RIGHT))
+        center.real(std::real(center) + 0.1 / zoom);    
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_UP))
+        center.imag(std::imag(center) - 0.1 / zoom);
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_DOWN))
+        center.imag(std::imag(center) + 0.1 / zoom);    
+}

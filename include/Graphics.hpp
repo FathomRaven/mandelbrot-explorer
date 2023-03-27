@@ -1,6 +1,6 @@
 /*
 Singleton class for handling graphics, rendering, windowing
-Has basic input with the keyboardState variable
+Has basic input
 Not frame limited, no DeltaTime yet
 */
 #pragma once
@@ -38,17 +38,15 @@ public:
     /// @brief Manually close the window and application
     void CloseWindow() { windowShouldClose = true; }
 
+    /// @brief Check if SDL_Scancode is being pressed
+    /// @param key 
+    bool GetKeyDown(SDL_Scancode key);
+
     // Maybe not needed?
     SDL_Renderer *GetRenderer() { return renderer; }
 
     unsigned int width{};
     unsigned int height{};
-
-    /*
-    Current state of the keyboard, access with SDL_Scancode
-    TODO: Replace soon with proper functions
-    */
-    const Uint8 *keyboardState;
 
     Graphics(Graphics &other) = delete;
     void operator=(const Graphics &) = delete;
@@ -57,8 +55,12 @@ private:
     SDL_Window *window;
     SDL_Renderer *renderer;
 
+    // All window events
     SDL_Event events;
     bool windowShouldClose = false;
+
+    // Current state of the keyboard, access with SDL_Scancode
+    const Uint8 *keyboardState;
 
     Graphics()
     {
