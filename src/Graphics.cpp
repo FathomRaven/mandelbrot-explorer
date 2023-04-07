@@ -55,6 +55,16 @@ void Graphics::DrawPoint(unsigned int x, unsigned int y, SDL_Color color)
     SDL_RenderDrawPoint(renderer, x, y);
 }
 
+void Graphics::DrawTexture(SDL_Texture *texture)
+{
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+}
+
+SDL_Texture *Graphics::CreateTextureFromSurface(SDL_Surface *surface)
+{
+    return SDL_CreateTextureFromSurface(renderer, surface);
+}
+
 void Graphics::Render()
 {
     SDL_RenderPresent(renderer);
