@@ -1,7 +1,7 @@
 #include "Mandelbrot.hpp"
 
-Mandelbrot::Mandelbrot(std::complex<double> center, double zoom, unsigned int maxIterations, unsigned int width, unsigned int height)
-    : center(center), zoom(zoom), maxIterations(maxIterations), width(width), height{height}
+Mandelbrot::Mandelbrot(std::complex<double> center, double zoom, unsigned int maxIterations, unsigned int width, unsigned int height, unsigned int threadCount)
+    : center(center), zoom(zoom), maxIterations(maxIterations), width(width), height(height), threadCount(threadCount)
 {
     graphicsInstance = Graphics::GetInstance();
 
@@ -35,8 +35,34 @@ void Mandelbrot::Render()
 
 void Mandelbrot::CalculateSet()
 {
+    std::thread* threads[threadCount];
+
+    for (size_t i = 0; i < threadCount; i++)
+    {
+        threads[i] = new std::thread(&Mandelbrot::CalculateSectionOfSet, this, width / threadCount, (width / threadCount) * i);
+    }
+    
+    for (auto &&thread : threads)
+    {
+        thread->join();
+        delete thread;
+    }
+
+    /*
+    You might think, "Hey, why not just make a texture, and then use the SDL_Lock and Unlock functions?
+    Why make a surface just to make a texture?"
+    The answer is, for some reason, apparently, this is faster. Locking and unlocking is miserably slow from my tests.
+    Until I have a better option, this will just have to do
+    */
+    renderingTexture = graphicsInstance->CreateTextureFromSurface(renderingSurface);
+
+    updateSet = false;
+}
+
+void Mandelbrot::CalculateSectionOfSet(unsigned int sectionWidth, unsigned int sectionOffset)
+{
     // Loop through every pixel on the screen
-    for (unsigned int x = 0; x < width; x++)
+    for (unsigned int x = sectionOffset; x < sectionWidth + sectionOffset; x++)
     {
         for (unsigned int y = 0; y < height; y++)
         {
@@ -77,15 +103,7 @@ void Mandelbrot::CalculateSet()
         }
     }
 
-    /*
-    You might think, "Hey, why not just make a texture, and then use the SDL_Lock and Unlock functions?
-    Why make a surface just to make a texture?"
-    The answer is, for some reason, apparently, this is faster. Locking and unlocking is miserably slow from my tests.
-    Until I have a better option, this will just have to do
-    */
-    renderingTexture = graphicsInstance->CreateTextureFromSurface(renderingSurface);
-
-    updateSet = false;
+    pthread_exit(NULL);
 }
 
 void Mandelbrot::Update()

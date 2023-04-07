@@ -6,9 +6,9 @@
 int main()
 {
     Graphics *window = Graphics::GetInstance();
-    window->CreateWindow("Hello World", 800, 800);
+    window->CreateWindow("Mandelbrot Explorer", 800, 800);
 
-    Mandelbrot mandelbrot({-0.5, 0.0}, 0.7, 30, window->width, window->height);
+    Mandelbrot mandelbrot({-0.5, 0.0}, 0.7, 200, window->width, window->height, 10);
 
     while (!window->Update())
     {   
