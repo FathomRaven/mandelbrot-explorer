@@ -14,11 +14,14 @@ public:
     /// @param center Initial offset
     /// @param zoom Starting value of zoom
     /// @param maxIterations Max amount of iterations
-    Mandelbrot(std::complex<double> center, double zoom, unsigned int maxIterations);
+    Mandelbrot(std::complex<double> center, double zoom, unsigned int maxIterations, unsigned int width, unsigned int height);
     ~Mandelbrot();
 
-    /// @brief Draw the mandelbrot set to the screen
+    /// @brief Draw to the screen
     void Render();
+
+    /// @brief Calculate the set, and update the pixels
+    void CalculateSet();
 
     /// @brief Handle input before rendering
     void Update();
@@ -29,4 +32,19 @@ private:
     std::complex<double> center;
     double zoom;
     unsigned int maxIterations;
+
+    unsigned int width;
+    unsigned int height;
+
+    // Should the set be recalculated?
+    bool updateSet{true};
+
+    // The surface that is manipulated. Faster than using a texture (???)
+    SDL_Surface* renderingSurface{nullptr};
+    
+    // Texture created from surface, to be drawn to the screen
+    SDL_Texture* renderingTexture{nullptr};
+
+    // The actual pixels in 32 bit unsigned integers
+    Uint32* pixels{nullptr};
 };

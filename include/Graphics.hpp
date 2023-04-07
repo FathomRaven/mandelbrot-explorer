@@ -28,6 +28,14 @@ public:
     /// @param color RGBA value to draw
     void DrawPoint(unsigned int x, unsigned int y, SDL_Color color);
 
+    /// @brief Draw a SDL_Texture to the screen
+    /// @param texture 
+    void DrawTexture(SDL_Texture* texture);
+
+    /// @brief Create a SDL_Texture from a SDL_Surface
+    /// @param surface 
+    SDL_Texture* CreateTextureFromSurface(SDL_Surface* surface);
+
     /// @brief Update the window, input, clear screen
     /// @return Returns if the window should close or not
     bool Update();
@@ -42,7 +50,7 @@ public:
     /// @param key 
     bool GetKeyDown(SDL_Scancode key);
 
-    // Maybe not needed?
+    // Goal: Make it so this is never needed
     SDL_Renderer *GetRenderer() { return renderer; }
 
     unsigned int width{};
