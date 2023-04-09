@@ -86,7 +86,7 @@ void Mandelbrot::CalculateSectionOfSet(unsigned int sectionWidth, unsigned int s
             // If the point is deemed in the set, draw as black
             if (count == maxIterations)
             {
-                pixels[x + (width * y)] = 0;
+                pixels[x + (width * y)] = 0 + (255 << 24);
                 continue;
             }
 
@@ -145,5 +145,21 @@ void Mandelbrot::Update()
     {
         center.imag(std::imag(center) + 0.1 / zoom);    
         updateSet = true;
+    }
+
+    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_S))
+    {
+        // Output folder
+        std::string filename{"pictures/"};
+
+        // Gets the zoom, x, and y coords, and strings them together
+        filename.append(std::to_string(zoom));
+        filename += " ";
+        filename.append(std::to_string(center.real()));
+        filename += " ";
+        filename.append(std::to_string(center.imag()));
+
+        // Use stbi to write as an image
+        stbi_write_png(filename.append(".png").c_str(), width, height, 4, renderingSurface->pixels, width * 4);
     }
 }
