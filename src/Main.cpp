@@ -8,7 +8,7 @@ int main()
     Graphics *window = Graphics::GetInstance();
     window->CreateWindow("Mandelbrot Explorer", 800, 800);
 
-    Mandelbrot mandelbrot({-0.5, 0.0}, 0.7, 200, window->width, window->height, 10);
+    Mandelbrot mandelbrot({-0.6, 0.0}, 0.7, 200, window->width, window->height, 10);
 
     while (!window->Update())
     {   

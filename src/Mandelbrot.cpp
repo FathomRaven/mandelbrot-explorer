@@ -5,6 +5,12 @@ Mandelbrot::Mandelbrot(std::complex<double> center, double zoom, unsigned int ma
 {
     graphicsInstance = Graphics::GetInstance();
 
+    defaultCenter = center;
+    defaultZoom = zoom;
+
+    defaultWidth = width;
+    defaultHeight = height;
+
     // Create the new surface. Messy
     // For some reason, this format makes the CreateTextureFromSurface function faster. No, I do not know why, and I probably never will
     renderingSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
@@ -147,7 +153,14 @@ void Mandelbrot::Update()
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_S))
+    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_0))
+    {
+        center = defaultCenter;
+        zoom = defaultZoom;
+        updateSet = true;
+    }
+
+    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_S))
     {
         // Output folder
         std::string filename{"pictures/"};
@@ -161,5 +174,31 @@ void Mandelbrot::Update()
 
         // Use stbi to write as an image
         stbi_write_png(filename.append(".png").c_str(), width, height, 4, renderingSurface->pixels, width * 4);
+    }
+
+    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_LEFTBRACKET))
+    {
+        maxIterations = maxIterations / 2;
+        updateSet = true;
+    }
+
+    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_RIGHTBRACKET))
+    {
+        if(maxIterations == 0)
+            maxIterations = 2;
+
+        maxIterations = maxIterations * 2;
+        updateSet = true;
+    }
+
+    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_I))
+    {
+        std::cout << "Current stats" << '\n';
+        std::cout << "------------------------------------" << '\n';
+        std::cout << "Iteration count: " << maxIterations << '\n';
+        std::cout << "Zoom: " << zoom << '\n';
+        std::cout << "X: " << center.real() << '\n';
+        std::cout << "Y: " << center.imag() << '\n';
+        std::cout << '\n';
     }
 }
