@@ -16,6 +16,8 @@ void Graphics::Release()
 
 bool Graphics::Update()
 {
+    memcpy(prevKeyboardState, keyboardState, keyLength);
+
     // Polls all the events, ensures all are gotten
     while (SDL_PollEvent(&events))
     {
@@ -29,9 +31,6 @@ bool Graphics::Update()
             break;
         }
     }
-
-    // Update input
-    keyboardState = SDL_GetKeyboardState(nullptr);
 
     // Clear the screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -73,4 +72,11 @@ void Graphics::Render()
 bool Graphics::GetKeyDown(SDL_Scancode key)
 {
     return keyboardState[key];
+}
+
+bool Graphics::GetKeyPress(SDL_Scancode key)
+{
+    // std::cout << "PREV: " << (bool)prevKeyboardState[key] << '\n';
+    // std::cout << "CURE: " << (bool)keyboardState[key] << '\n';
+    return !prevKeyboardState[key] && keyboardState[key];
 }

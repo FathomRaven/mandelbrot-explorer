@@ -50,6 +50,8 @@ public:
     /// @param key 
     bool GetKeyDown(SDL_Scancode key);
 
+    bool GetKeyPress(SDL_Scancode key);
+
     // Goal: Make it so this is never needed
     SDL_Renderer *GetRenderer() { return renderer; }
 
@@ -67,13 +69,19 @@ private:
     SDL_Event events;
     bool windowShouldClose = false;
 
+    // State of the keyboard last frame
+    Uint8 *prevKeyboardState = nullptr;
     // Current state of the keyboard, access with SDL_Scancode
-    const Uint8 *keyboardState;
+    const Uint8 *keyboardState = nullptr;
+    int keyLength;
 
     Graphics()
     {
         // Initialize SDL 
         SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+
+        keyboardState = SDL_GetKeyboardState(&keyLength);
+        prevKeyboardState = new Uint8[keyLength];
     }
 
     ~Graphics()

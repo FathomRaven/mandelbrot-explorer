@@ -42,6 +42,12 @@ private:
     unsigned int width;
     unsigned int height;
 
+    // The defaults initially given
+    std::complex<double> defaultCenter;
+    double defaultZoom;
+    unsigned int defaultWidth;
+    unsigned int defaultHeight;
+
     unsigned int threadCount;
 
     // Should the set be recalculated?
