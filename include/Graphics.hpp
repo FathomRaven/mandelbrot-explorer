@@ -1,12 +1,12 @@
 /*
 Singleton class for handling graphics, rendering, windowing
-Has basic input
 Not frame limited, no DeltaTime yet
 */
 #pragma once
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include "Input.hpp"
 
 class Graphics
 {
@@ -46,12 +46,6 @@ public:
     /// @brief Manually close the window and application
     void CloseWindow() { windowShouldClose = true; }
 
-    /// @brief Check if SDL_Scancode is being pressed
-    /// @param key 
-    bool GetKeyDown(SDL_Scancode key);
-
-    bool GetKeyPress(SDL_Scancode key);
-
     // Goal: Make it so this is never needed
     SDL_Renderer *GetRenderer() { return renderer; }
 
@@ -69,19 +63,10 @@ private:
     SDL_Event events;
     bool windowShouldClose = false;
 
-    // State of the keyboard last frame
-    Uint8 *prevKeyboardState = nullptr;
-    // Current state of the keyboard, access with SDL_Scancode
-    const Uint8 *keyboardState = nullptr;
-    int keyLength;
-
     Graphics()
     {
         // Initialize SDL 
         SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-
-        keyboardState = SDL_GetKeyboardState(&keyLength);
-        prevKeyboardState = new Uint8[keyLength];
     }
 
     ~Graphics()
