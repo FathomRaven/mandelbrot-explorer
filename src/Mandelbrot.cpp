@@ -114,53 +114,58 @@ void Mandelbrot::CalculateSectionOfSet(unsigned int sectionWidth, unsigned int s
 
 void Mandelbrot::Update()
 {
-    // Everything here takes zoom into account, seems to help movement and zooming still work as depth increases 
-    // If we move or zoom, we need to change updateSet, so that we recalculate the set
 
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_SPACE))
+    // ZOOM
+
+    if(Input::GetKeyDown(SDL_SCANCODE_SPACE))
     {
         zoom += zoom / 10;
         updateSet = true;
     }
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_LCTRL))
+    if(Input::GetKeyDown(SDL_SCANCODE_LCTRL))
     {
         zoom -= zoom / 10;
         updateSet = true;
     }
 
+    // MOVING
 
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_LEFT))
+    if(Input::GetKeyDown(SDL_SCANCODE_LEFT))
     {
         center.real(std::real(center) - 0.1 / zoom);
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_RIGHT))
+    if(Input::GetKeyDown(SDL_SCANCODE_RIGHT))
     {
         center.real(std::real(center) + 0.1 / zoom);    
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_UP))
+    if(Input::GetKeyDown(SDL_SCANCODE_UP))
     {
         center.imag(std::imag(center) - 0.1 / zoom);
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyDown(SDL_SCANCODE_DOWN))
+    if(Input::GetKeyDown(SDL_SCANCODE_DOWN))
     {
         center.imag(std::imag(center) + 0.1 / zoom);    
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_0))
+    // RESET
+
+    if(Input::GetKeyPressed(SDL_SCANCODE_R))
     {
         center = defaultCenter;
         zoom = defaultZoom;
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_S))
+    // SCREENSHOT
+
+    if(Input::GetKeyPressed(SDL_SCANCODE_S))
     {
         // Output folder
         std::string filename{"pictures/"};
@@ -176,22 +181,26 @@ void Mandelbrot::Update()
         stbi_write_png(filename.append(".png").c_str(), width, height, 4, renderingSurface->pixels, width * 4);
     }
 
-    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_LEFTBRACKET))
+    // CHANGE ITERATIONS
+
+    if(Input::GetKeyPressed(SDL_SCANCODE_LEFTBRACKET))
     {
         maxIterations = maxIterations / 2;
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_RIGHTBRACKET))
+    if(Input::GetKeyPressed(SDL_SCANCODE_RIGHTBRACKET))
     {
         if(maxIterations == 0)
-            maxIterations = 2;
+            maxIterations = 1;
 
         maxIterations = maxIterations * 2;
         updateSet = true;
     }
 
-    if(graphicsInstance->GetKeyPress(SDL_SCANCODE_I))
+    // PRINT INFO
+
+    if(Input::GetKeyPressed(SDL_SCANCODE_I))
     {
         std::cout << "Current stats" << '\n';
         std::cout << "------------------------------------" << '\n';
