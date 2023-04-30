@@ -15,5 +15,9 @@ add_executable(Mandelbrot ${SOURCES} ${HEADERS})
 find_package(SDL2 REQUIRED)
 target_link_libraries(Mandelbrot PRIVATE SDL2::SDL2)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(Mandelbrot PRIVATE Threads::Threads)
+
 # Set target include directories
 target_include_directories(Mandelbrot PRIVATE include)

@@ -1,5 +1,8 @@
 #include "Mandelbrot.hpp"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb/stb_image_write.h"
+
 Mandelbrot::Mandelbrot(std::complex<double> center, double zoom, unsigned int maxIterations, unsigned int width, unsigned int height, unsigned int threadCount)
     : center(center), zoom(zoom), maxIterations(maxIterations), width(width), height(height), threadCount(threadCount)
 {

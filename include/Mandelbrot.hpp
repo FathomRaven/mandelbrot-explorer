@@ -5,7 +5,6 @@ Calculates the mandelbrot set and renders it to the screen
 
 #pragma once
 
-#include <stb/stb_image_write.h>
 #include <complex>
 #include <thread>
 #include <string>
